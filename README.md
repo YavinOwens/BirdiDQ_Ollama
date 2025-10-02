@@ -250,6 +250,131 @@ ollama_jupyter/
     └── setup_oracle.sh          # Oracle Docker setup script
 ```
 
+## 🏗️ High-Level Architecture
+
+The following diagram illustrates how the key components integrate to provide natural language data quality validation:
+
+```mermaid
+graph TB
+    %% User Interface Layer
+    subgraph "User Interface"
+        UI[Streamlit Web App<br/>Port 8503]
+        JN[Jupyter Notebooks<br/>Port 8888]
+    end
+    
+    %% Application Layer
+    subgraph "BirdiDQ Application"
+        APP[Streamlit App<br/>app.py]
+        CONN[Database Connectors<br/>PostgreSQL & Oracle]
+        HELP[Helper Modules<br/>Code Display & Utils]
+    end
+    
+    %% LLM Integration
+    subgraph "LLM Processing"
+        OLLAMA[Ollama Cloud API<br/>gpt-oss:20b Model]
+        NATLANG[Natural Language<br/>Input Processing]
+        GXCODE[Great Expectations<br/>Code Generation]
+    end
+    
+    %% Data Validation Engine
+    subgraph "Great Expectations Framework"
+        GX[GX Context<br/>Fluent API 0.18.x]
+        EXPECT[Expectation Suites<br/>JSON Files]
+        CHECK[Checkpoints<br/>Validation Orchestration]
+        DOCS[Data Docs<br/>HTML Reports]
+    end
+    
+    %% Data Sources
+    subgraph "Data Sources"
+        PG[(PostgreSQL Database<br/>NYC Taxi Data<br/>SQL Execution Engine)]
+        ORACLE[(Oracle 19c Database<br/>TRANSACTIONS Table<br/>Pandas Execution Engine)]
+        LOCAL[Local Files<br/>CSV/Excel<br/>Pandas Engine]
+    end
+    
+    %% Infrastructure
+    subgraph "Infrastructure"
+        DOCKER[Docker Container<br/>Oracle 19c]
+        FILES[File System<br/>Expectations & Checkpoints]
+    end
+    
+    %% User Interactions
+    UI --> APP
+    JN --> APP
+    
+    %% Application Flow
+    APP --> CONN
+    APP --> NATLANG
+    APP --> HELP
+    
+    %% LLM Processing Flow
+    NATLANG --> OLLAMA
+    OLLAMA --> GXCODE
+    GXCODE --> GX
+    
+    %% Great Expectations Flow
+    GX --> EXPECT
+    GX --> CHECK
+    CHECK --> DOCS
+    HELP --> DOCS
+    
+    %% Data Connections
+    CONN --> PG
+    CONN --> ORACLE
+    CONN --> LOCAL
+    
+    %% Infrastructure Connections
+    ORACLE --> DOCKER
+    EXPECT --> FILES
+    CHECK --> FILES
+    DOCS --> FILES
+    
+    %% Styling
+    classDef userInterface fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef application fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef llm fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef gx fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    classDef data fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    classDef infra fill:#f1f8e9,stroke:#33691e,stroke-width:2px
+    
+    class UI,JN userInterface
+    class APP,CONN,HELP application
+    class OLLAMA,NATLANG,GXCODE llm
+    class GX,EXPECT,CHECK,DOCS gx
+    class PG,ORACLE,LOCAL data
+    class DOCKER,FILES infra
+```
+
+### Architecture Flow Description
+
+1. **User Interface Layer**
+   - **Streamlit Web App** (Port 8503): Production interface for team-based data quality validation
+   - **Jupyter Notebooks** (Port 8888): Experimental environment for testing patterns
+
+2. **Application Layer**
+   - **Streamlit App**: Main application orchestrating all components
+   - **Database Connectors**: Handle PostgreSQL, Oracle, and local file connections
+   - **Helper Modules**: Enhance Data Docs with code display and utility functions
+
+3. **LLM Processing**
+   - **Ollama Cloud API**: Processes natural language input using `gpt-oss:20b` model
+   - **Natural Language Processing**: Converts user requirements to structured expectations
+   - **Code Generation**: Produces valid Great Expectations Fluent API code
+
+4. **Great Expectations Framework**
+   - **GX Context**: Manages validation context and configuration
+   - **Expectation Suites**: Store validation rules as JSON files
+   - **Checkpoints**: Orchestrate validation execution and reporting
+   - **Data Docs**: Generate HTML reports with embedded code examples
+
+5. **Data Sources**
+   - **PostgreSQL**: Production database with SQL execution engine
+   - **Oracle 19c**: Local Docker container with Pandas execution engine
+   - **Local Files**: CSV/Excel files processed with Pandas
+
+6. **Infrastructure**
+   - **Docker Container**: Isolated Oracle 19c database environment
+   - **File System**: Persistent storage for GX artifacts and configurations
+
 ### Component Breakdown
 
 #### `/notebooks/` - Experimentation
