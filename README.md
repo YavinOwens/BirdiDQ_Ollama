@@ -2,32 +2,29 @@
 
 A comprehensive data validation platform that integrates Streamlit for interactive web-based data quality checks, leverages the latest Great Expectations 0.18.x (Fluent API) for robust data validation, and utilizes Ollama LLM (gpt-oss:20b model) for natural language-driven expectation generation and validation.
 
+## 📋 Table of Contents
+- [Use Cases](#-use-cases)
+- [References & Credits](#-references--credits)
+- [Overview](#-overview)
+- [Quick Start](#-quick-start)
+- [Key Features](#-key-features)
+- [Documentation](#-documentation)
+- [High-Level Architecture](#-high-level-architecture)
+- [Configuration](#-configuration)
+- [Technical Details](#-technical-details)
+- [License & Contributing](#-license--contributing)
+
+---
+
 ## 🎯 Use Cases
 
-### 1. Data Exploration
-**Use:** Jupyter notebooks  
-**Purpose:** Learn Great Expectations patterns, test Ollama integration  
-**Audience:** Data engineers, developers
-
-### 2. Production Validation
-**Use:** BirdiDQ Streamlit app  
-**Purpose:** Team-based data quality checks with natural language  
-**Audience:** Data analysts, business users
-
-### 3. Natural Language QA
-**Use:** Ollama LLM integration  
-**Purpose:** Generate validation rules from plain English  
-**Audience:** Non-technical stakeholders
-
-### 4. Database Monitoring
-**Use:** Scheduled checkpoint runs  
-**Purpose:** Continuous data quality monitoring  
-**Audience:** Data engineers, DevOps
-
-### 5. Custom Reporting
-**Use:** Enhanced Data Docs  
-**Purpose:** Branded reports with embedded code  
-**Audience:** Data governance teams
+| Use Case | Tool/Component | Purpose | Target Audience |
+|----------|----------------|---------|-----------------|
+| **Data Exploration** | Jupyter notebooks | Learn GX patterns, test Ollama integration | Data engineers, developers |
+| **Production Validation** | BirdiDQ Streamlit app | Team-based data quality checks with natural language | Data analysts, business users |
+| **Natural Language QA** | Ollama LLM integration | Generate validation rules from plain English | Non-technical stakeholders |
+| **Database Monitoring** | Scheduled checkpoint runs | Continuous data quality monitoring | Data engineers, DevOps |
+| **Custom Reporting** | Enhanced Data Docs | Branded reports with embedded code | Data governance teams |
 
 ## 📖 References & Credits
 
@@ -53,20 +50,6 @@ A comprehensive data validation platform that integrates Streamlit for interacti
 2. Review troubleshooting docs in `BirdiDQ/` directory
 3. Check Great Expectations documentation
 4. Review terminal output for specific errors
-
----
-
-## 📋 Table of Contents
-- [Use Cases](#-use-cases)
-- [References & Credits](#-references--credits)
-- [Overview](#-overview)
-- [Quick Start](#-quick-start)
-- [Key Features](#-key-features)
-- [Documentation](#-documentation)
-- [Project Structure](#-project-structure)
-- [Configuration](#-configuration)
-- [Technical Details](#-technical-details)
-- [License & Contributing](#-license--contributing)
 
 ---
 
@@ -188,67 +171,6 @@ Located in `BirdiDQ/` directory:
   - `06_data_docs.png` - Data Docs HTML reports
 
 ---
-
-## 📁 Project Structure
-
-### High-Level Organization
-
-```
-ollama_jupyter/
-├── README.md                    # This file - main documentation
-├── WORKFLOW.md                  # Step-by-step user guide with screenshots
-├── .env                         # Environment configuration (create from template)
-├── env_template.txt             # Environment variable template
-├── requirements.txt             # Python dependencies
-├── .gitignore                   # Git ignore rules
-├── venv/                        # Virtual environment
-│
-├── birdidq_vs2_imgs/           # Workflow screenshots
-│   ├── 01_select_database.png
-│   ├── 02_select_table.png
-│   └── ...
-│
-├── notebooks/                   # Jupyter experiments
-│   ├── great_expectations/      # GX pattern testing
-│   │   ├── demo.ipynb
-│   │   ├── great_expectations_batch.ipynb
-│   │   └── great_expectations_csv_DataAssistants.ipynb
-│   └── ollama/                  # LLM integration tests
-│       └── ollama_cloud.ipynb
-│
-├── BirdiDQ/                     # Production Streamlit application
-│   ├── README.md                # BirdiDQ-specific documentation
-│   ├── requirements.txt         # App-specific dependencies
-│   ├── LICENSE                  # Apache 2.0 License
-│   │
-│   ├── great_expectations/      # Application code
-│   │   ├── app.py               # Main Streamlit application
-│   │   ├── connecting_data/     # Database connectors
-│   │   │   ├── database/
-│   │   │   │   ├── postgresql.py
-│   │   │   │   └── oracle.py
-│   │   │   └── filesystem/
-│   │   ├── helpers/             # Utility modules
-│   │   │   ├── code_display_enhancer.py
-│   │   │   └── utils.py
-│   │   ├── models/              # LLM integration
-│   │   │   ├── ollama_model.py
-│   │   │   ├── gpt_model.py
-│   │   │   └── falcon_model.py
-│   │   └── ui/                  # UI assets
-│   │
-│   ├── gx/                      # Great Expectations artifacts
-│   │   ├── great_expectations.yml
-│   │   ├── checkpoints/
-│   │   ├── expectations/
-│   │   └── uncommitted/
-│   │       └── data_docs/
-│   │
-│   └── [Documentation Files]    # All .md files listed above
-│
-└── scripts/
-    └── setup_oracle.sh          # Oracle Docker setup script
-```
 
 ## 🏗️ High-Level Architecture
 
@@ -374,27 +296,6 @@ graph TB
 6. **Infrastructure**
    - **Docker Container**: Isolated Oracle 19c database environment
    - **File System**: Persistent storage for GX artifacts and configurations
-
-### Component Breakdown
-
-#### `/notebooks/` - Experimentation
-- **Purpose:** Testing Great Expectations patterns and Ollama integration
-- **Use Case:** Learning, prototyping, and API exploration
-- **Key Files:**
-  - `demo.ipynb` - Fluent API demonstrations
-  - `great_expectations_batch.ipynb` - Batch processing workflows
-  - `great_expectations_csv_DataAssistants.ipynb` - Data Assistant examples
-  - `ollama_cloud.ipynb` - Cloud API testing with Ollama Turbo
-
-#### `/BirdiDQ/` - Production Application
-- **Purpose:** Full-featured Streamlit web application
-- **Use Case:** Team-based data quality validation with natural language
-- **Key Components:**
-  - `app.py` - Main application entry point
-  - `connecting_data/` - PostgreSQL and Oracle connectors
-  - `helpers/code_display_enhancer.py` - Embeds code in Data Docs
-  - `models/ollama_model.py` - Ollama LLM integration
-  - `gx/` - Great Expectations context and artifacts
 
 ---
 
