@@ -1,0 +1,12 @@
+# Ollama Configuration for BirdiDQ
+# Cloud Ollama settings
+OLLAMA_CLOUD_BASE_URL=https://ollama.com
+OLLAMA_CLOUD_MODEL=gpt-oss:20b
+OLLAMA_API_KEY=your_ollama_api_key_here
+
+# Database Configuration (if needed)
+# PostgreSQL connection string
+POSTGRES_CONNECTION_STRING=postgresql+psycopg2://username:password@host:port/database
+
+# Email Configuration (for SendGrid)
+SENDGRID_API_KEY=your_sendgrid_api_key_here

@@ -1,0 +1,22 @@
+# Environment Configuration Template
+
+# Ollama Configuration
+# Local Ollama settings
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_LOCAL_MODEL=llama3.1:latest
+
+# Ollama Cloud (Turbo) settings
+OLLAMA_CLOUD_BASE_URL=https://ollama.com
+OLLAMA_CLOUD_MODEL=gpt-oss:20b
+OLLAMA_API_KEY=your_api_key_here
+
+# Database Configuration
+# PostgreSQL (Great Expectations workshop database)
+POSTGRES_CONNECTION_STRING=postgresql+psycopg2://try_gx:try_gx@postgres.workshops.greatexpectations.io/gx_example_db
+
+# Oracle (Local Docker setup)
+ORACLE_CONNECTION_STRING=oracle+oracledb://system:oracle@localhost:1521/?service_name=FREEPDB1
+
+# Application settings
+LOG_LEVEL=INFO
+OUTPUT_DIR=notebooks/outputs

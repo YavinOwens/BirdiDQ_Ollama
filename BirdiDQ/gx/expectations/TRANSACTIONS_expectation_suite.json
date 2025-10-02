@@ -1,0 +1,26 @@
+{
+  "data_asset_type": null,
+  "expectation_suite_name": "TRANSACTIONS_expectation_suite",
+  "expectations": [
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "AMOUNT",
+        "min_value": 0,
+        "strict_min": true
+      },
+      "meta": {
+        "notes": {
+          "content": [
+            "### \ud83d\udcdd Implementation Details\n\n**Python Code:**\n```python\nvalidator.expect_column_values_to_be_between(column=\"AMOUNT\", min_value=0, strict_min=True)\n```\n\n**Execution Engine:** Oracle (Pandas)\n\n\n---\n*This expectation is executed using Great Expectations' Oracle (Pandas) execution engine.*\n"
+          ],
+          "format": "markdown"
+        }
+      }
+    }
+  ],
+  "ge_cloud_id": null,
+  "meta": {
+    "great_expectations_version": "0.18.22"
+  }
+}

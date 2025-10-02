@@ -1,0 +1,50 @@
+# Environment files
+.env
+*.env
+.env.*
+!.env.example
+!env_template.txt
+
+# Virtual environments
+venv/
+.venv/
+*.venv
+env/
+ENV/
+bir_env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# Great Expectations
+gx/uncommitted/
+great_expectations/uncommitted/
+*.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.cache/

@@ -1,0 +1,10 @@
+great_expectations
+ollama
+streamlit
+streamlit_extras
+plotly
+python_dotenv
+sendgrid
+sqlalchemy==1.4.49
+psycopg2-binary
+oracledb
