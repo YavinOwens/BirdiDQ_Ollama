@@ -141,6 +141,14 @@ jupyter notebook
   - Validation results interpretation
   - Data Docs navigation and analysis
 
+### 🔄 Migration & Planning
+- **[MIGRATION_PLAN.md](MIGRATION_PLAN.md)** - Comprehensive migration strategy from GX 0.18.x to 0.24+
+  - Current vs. target architecture analysis
+  - Breaking changes identification and mitigation
+  - 6-week phased migration plan
+  - Specific code changes and examples
+  - Risk assessment and success metrics
+
 ### 📖 BirdiDQ Application Guides
 Located in `BirdiDQ/` directory:
 
