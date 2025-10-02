@@ -2,7 +2,7 @@
 
 ## 📋 Executive Summary
 
-This document outlines the migration strategy for the Ollama Jupyter project from Great Expectations 0.18.x to the latest version (0.24+), addressing breaking changes, architectural updates, and compatibility considerations for the integrated system.
+This document outlines the migration strategy for the Ollama Jupyter project from Great Expectations 0.18.x to the latest version (1.6.3), addressing breaking changes, architectural updates, and compatibility considerations for the integrated system.
 
 ## 🏗️ Current Architecture (GX 0.18.x)
 
@@ -119,7 +119,7 @@ graph TB
 - **Code Display Enhancement**: Custom Data Docs with embedded Python/SQL code
 - **Streamlit Interface**: Interactive web application for validation
 
-## 🚀 Target Architecture (GX 0.24+)
+## 🚀 Target Architecture (GX 1.6.3)
 
 ### High-Level System Integration (Updated)
 
@@ -145,15 +145,17 @@ graph TB
         GXCODE[Great Expectations<br/>Code Generation]
     end
     
-    %% Data Validation Engine (Updated GX 0.24+)
-    subgraph "Great Expectations 0.24+ Framework"
-        GX[GX Context<br/>Fluent API 0.24+]
+    %% Data Validation Engine (Updated GX 1.6.3)
+    subgraph "Great Expectations 1.6.3 Framework"
+        GX[GX Context<br/>Fluent API 1.6.3]
         EXPECT[Expectation Suites<br/>JSON Files]
         CHECK[Checkpoints<br/>Enhanced Orchestration]
         DOCS[Data Docs<br/>Modern HTML Reports]
         DATASRC[Data Sources<br/>Python-based Config]
         VALIDATOR[Validator<br/>Enhanced Runtime Validation]
         BATCH[Batch Definitions<br/>Improved Data Handling]
+        SEVERITY[Severity Tagging<br/>New Feature]
+        INTEGRATION[Integration Points<br/>New Feature]
     end
     
     %% Data Sources
@@ -221,7 +223,7 @@ graph TB
 
 ### Target Implementation Details
 
-#### **Great Expectations 0.24+ Components:**
+#### **Great Expectations 1.6.3 Components:**
 - **DataContext**: Python-based configuration system (enhanced)
 - **Fluent API**: Improved expectation creation with better error handling
 - **Data Sources**: Python-based configuration with enhanced runtime support
@@ -230,10 +232,12 @@ graph TB
 - **Expectation Suites**: JSON-based expectation storage (backward compatible)
 - **Checkpoints**: Enhanced validation orchestration and reporting
 - **Data Docs**: Modern HTML report generation with improved styling
+- **Severity Tagging**: New feature for expectation severity levels
+- **Integration Points**: New feature for system integration diagrams
 
 ## 🔍 Breaking Changes Analysis
 
-### Major Breaking Changes (GX 0.18.x → 0.24+)
+### Major Breaking Changes (GX 0.18.x → 1.6.3)
 
 #### **1. DataContext Configuration Changes**
 - **Breaking Change**: Transition from block-based to Python-based configuration
@@ -313,13 +317,13 @@ graph TB
   great-expectations>=0.18.0
   
   # Updated
-  great-expectations>=0.24.0
+  great-expectations>=1.6.3
   ```
 
 - [ ] **Install New Version**: 
   ```bash
   pip install --upgrade great-expectations
-  pip install great-expectations==0.24.0
+  pip install great-expectations==1.6.3
   ```
 
 #### **2.2 Configuration Migration**
@@ -336,7 +340,7 @@ graph TB
         default_runtime_data_connector:
           class_name: RuntimeDataConnector
   
-  # Updated (0.24+)
+  # Updated (1.6.3)
   datasources:
     postgresql_datasource:
       class_name: Datasource
@@ -358,7 +362,7 @@ graph TB
         data_connector_name: default_runtime_data_connector
         data_asset_name: nyc_taxi_data
   
-  # Updated (0.24+)
+  # Updated (1.6.3)
   validations:
     - batch_request:
         datasource_name: postgresql_datasource
@@ -382,7 +386,7 @@ graph TB
       batch_identifiers={"default_identifier_name": "default"}
   )
   
-  # Updated (0.24+)
+  # Updated (1.6.3)
   from great_expectations.core.batch import BatchDefinition
   
   batch_definition = BatchDefinition(
@@ -401,7 +405,7 @@ graph TB
       expectation_suite_name=expectation_suite_name
   )
   
-  # Updated (0.24+)
+  # Updated (1.6.3)
   validator = context.get_validator(
       batch_definition=batch_definition,
       expectation_suite_name=expectation_suite_name
@@ -415,12 +419,12 @@ graph TB
   ```python
   # Update prompt templates in ollama_model.py
   PROMPT_TEMPLATE = """
-  Generate Great Expectations 0.24+ compatible code for the following requirement:
+  Generate Great Expectations 1.6.3 compatible code for the following requirement:
   {requirement}
   
   Use the following column names: {columns}
   
-  Generate validator.expect_* calls compatible with GX 0.24+.
+  Generate validator.expect_* calls compatible with GX 1.6.3.
   """
   ```
 
@@ -430,9 +434,9 @@ graph TB
 #### **3.2 Data Docs Enhancement Updates**
 - [ ] **Update Code Display Enhancer**: Modify `code_display_enhancer.py`
   ```python
-  # Update CSS classes and HTML structure for GX 0.24+
+  # Update CSS classes and HTML structure for GX 1.6.3
   def enhance_data_docs_with_code(self, expectation_suite_name):
-      # Update for new Data Docs structure
+      # Update for new Data Docs structure with severity tagging
       pass
   ```
 
