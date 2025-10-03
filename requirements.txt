@@ -20,8 +20,8 @@
 # Ollama Python client
 ollama>=0.1.0
 
-# Great Expectations for data validation
-great-expectations>=0.18.0
+# Great Expectations for data validation (latest stable)
+great-expectations==0.18.22
 
 # Database integration
 oracledb>=3.0.0
