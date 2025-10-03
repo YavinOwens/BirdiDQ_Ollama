@@ -34,7 +34,7 @@ st.markdown("""
         margin-bottom: 2rem;
     }
     .section-header {
-        font-size: １.5rem;
+        font-size: 1.5rem;
         color: #ff7f0e;
         margin-top: 2rem;
         margin-bottom: 1rem;
@@ -333,7 +333,7 @@ def main():
                     st.info("No missing values found!")
             
             # Validation button
-            st.markdown('<h2 class="section-header">🔍 Data Validation</h2>', unsafe_allowHtml=True)
+            st.markdown('<h2 class=\"section-header\">🔍 Data Validation</h2>', unsafe_allow_html=True)
             
             if st.button("🚀 Run Data Quality Validation", type="primary", use_container_width=True):
                 with st.spinner("Running Great Expectations validation..."):
