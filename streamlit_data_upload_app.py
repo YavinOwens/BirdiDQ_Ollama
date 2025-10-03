@@ -223,7 +223,7 @@ def display_data_overview(df):
     
     # Display basic statistics
     st.subheader("Basic Statistics")
-    st.dataframe(df.describe(), use_container_width=True)
+    st.dataframe(df.describe(), width='content')
 
 def display_validation_results(results):
     """Display validation results"""
