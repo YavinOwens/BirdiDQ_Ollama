@@ -1,0 +1,15 @@
+{
+  "suite_name": "database_manual_suite",
+  "expectations_count": 2,
+  "checkpoint_success": true,
+  "statistics": {
+    "data_asset_count": 1,
+    "validation_result_count": 1,
+    "successful_validation_count": 1,
+    "unsuccessful_validation_count": 0,
+    "successful_validation_percent": 100.0
+  },
+  "batch_id": "postgres_demo-nyc_taxi_data",
+  "data_source": "postgres_demo",
+  "data_asset": "nyc_taxi_data"
+}

@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Quality Dashboard</title>
+    <style>
+        
+/* Hide Great Expectations logo */
+.navbar-brand img,
+.gx-logo,
+.great-expectations-logo {
+    display: none !important;
+}
+
+/* Hide newsletter signup footer */
+.footer-newsletter,
+.newsletter-signup,
+[class*="newsletter"],
+[id*="newsletter"],
+.stay-current,
+.newsletter-footer {
+    display: none !important;
+}
+
+/* Hide footer text about staying current */
+.footer-text,
+.footer p,
+.footer div {
+    display: none !important;
+}
+
+/* Add your custom branding */
+.navbar-brand::before {
+    content: "📊 ";
+    font-size: 28px;
+}
+
+.navbar-brand::after {
+    content: " Data Quality Dashboard";
+    font-size: 20px;
+    color: #7f8c8d;
+}
+
+/* Custom colors */
+:root {
+    --primary-color: #3498db;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+}
+
+/* Enhanced styling */
+.expectation-result-success {
+    background-color: #d4edda !important;
+    border-color: #c3e6cb !important;
+    color: #155724 !important;
+}
+
+.expectation-result-failure {
+    background-color: #f8d7da !important;
+    border-color: #f5c6cb !important;
+    color: #721c24 !important;
+}
+
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table thead th {
+    background-color: #2c3e50;
+    color: white;
+    font-weight: 600;
+}
+
+/* Hide footer links */
+footer a,
+footer .footer-links {
+    display: none !important;
+}
+
+/* Custom footer styling */
+footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    padding: 20px 0;
+    text-align: center;
+}
+
+footer::after {
+    content: "© 2024 Your Organization - Data Quality Dashboard";
+    color: #6c757d;
+    font-size: 14px;
+}
+
+
+        /* Additional custom styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .success {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .failure {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        .data-docs-link {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 10px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .data-docs-link:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Data Quality Dashboard</h1>
+        <p>Comprehensive Data Validation Reports</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>🎯 Validation Results</h2>
+            <p>Your Great Expectations validation results are ready!</p>
+
+            <h3>📋 Available Data Docs Sites:</h3>
+            <div style="text-align: center;">
+
+                <a href="file:///var/folders/cm/bcl6gwk54h30m22ttznh9b1r0000gn/T/tmp99g8z0uh/index.html" class="data-docs-link" target="_blank">
+                    🔗 local_site
+                </a>
+
+            </div>
+
+            <div style="margin-top: 30px; padding: 20px; background-color: #e8f4fd; border-radius: 8px;">
+                <h4>✨ Custom Styling Applied:</h4>
+                <ul>
+                    <li>✅ Great Expectations logo hidden</li>
+                    <li>✅ Newsletter footer removed</li>
+                    <li>✅ Custom branding applied</li>
+                    <li>✅ Professional styling enhanced</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📊 Validation Summary</h3>
+            <p>Click on the Data Docs links above to view detailed validation results, expectation suites, and data quality metrics.</p>
+
+            <h4>🎨 Customization Features:</h4>
+            <ul>
+                <li><strong>Branded Interface:</strong> Custom header with your organization's branding</li>
+                <li><strong>Clean Design:</strong> No vendor logos or promotional content</li>
+                <li><strong>Professional Colors:</strong> Custom color scheme for success/failure indicators</li>
+                <li><strong>Enhanced Tables:</strong> Improved styling for better readability</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Your Organization - Data Quality Dashboard</p>
+        <p>Powered by Great Expectations (Customized)</p>
+    </div>
+</body>
+</html>
