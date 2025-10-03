@@ -21,6 +21,14 @@ class PandasFilesystemDatasource():
         self.dataframe = dataframe
         self.partition_date = datetime.datetime.now()
         self.context = ge.get_context()
+    
+    @property
+    def table_name(self):
+        """
+        Return the datasource name as table_name for consistency with database connectors
+        For filesystem data, this represents the file/dataset identifier
+        """
+        return self.datasource_name
 
     def add_or_update_datasource(self):
         """
