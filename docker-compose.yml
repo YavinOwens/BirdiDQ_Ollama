@@ -22,29 +22,10 @@ services:
     networks:
       - ollama_network
 
-  # Optional: PostgreSQL for Great Expectations demo
-  postgres:
-    image: postgres:15
-    container_name: postgres_gx
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_DB=gx_example_db
-      - POSTGRES_USER=try_gx
-      - POSTGRES_PASSWORD=try_gx
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./scripts/init_postgres.sql:/docker-entrypoint-initdb.d/init.sql
-    restart: unless-stopped
-    networks:
-      - ollama_network
-
 volumes:
   oracle_data:
     driver: local
   oracle_backup:
-    driver: local
-  postgres_data:
     driver: local
 
 networks:

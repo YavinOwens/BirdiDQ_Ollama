@@ -20,20 +20,12 @@ fi
 
 echo "✅ Docker Compose is available"
 
-# Start services
-echo "🚀 Starting Oracle and PostgreSQL databases..."
+# Start Oracle service
+echo "🚀 Starting Oracle database..."
 docker-compose up -d
 
-# Wait for services to be ready
-echo "⏳ Waiting for services to be ready..."
-
-# Wait for PostgreSQL
-echo "📊 Waiting for PostgreSQL..."
-while ! docker exec postgres_gx pg_isready -U try_gx &> /dev/null; do
-    echo "   Still waiting for PostgreSQL..."
-    sleep 5
-done
-echo "✅ PostgreSQL is ready!"
+# Wait for Oracle to be ready
+echo "⏳ Waiting for Oracle to be ready..."
 
 # Wait for Oracle
 echo "🗄️  Waiting for Oracle..."
@@ -44,20 +36,20 @@ done
 echo "✅ Oracle is ready!"
 
 echo ""
-echo "🎉 All services are running!"
+echo "🎉 Oracle service is running!"
 echo ""
 echo "📋 Connection Information:"
 echo "=========================="
 echo ""
-echo "Oracle Database:"
+echo "Oracle Database (Local Docker):"
 echo "  Host: localhost"
 echo "  Port: 1521"
 echo "  Service: FREEPDB1"
 echo "  Username: system"
 echo "  Password: oracle"
 echo ""
-echo "PostgreSQL Database:"
-echo "  Host: localhost"
+echo "PostgreSQL Database (Online - Great Expectations Workshop):"
+echo "  Host: postgres.workshops.greatexpectations.io"
 echo "  Port: 5432"
 echo "  Database: gx_example_db"
 echo "  Username: try_gx"
@@ -66,7 +58,7 @@ echo ""
 echo "🚀 Next Steps:"
 echo "1. Start Jupyter: jupyter notebook notebooks/great_expectations/"
 echo "2. Run the Great Expectations workflows"
-echo "3. Stop services: docker-compose down"
+echo "3. Stop Oracle: docker-compose down"
 echo ""
 echo "📊 To view logs: docker-compose logs"
 echo "🛑 To stop: docker-compose down"
