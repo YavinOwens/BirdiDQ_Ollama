@@ -40,6 +40,10 @@ class PandasFilesystemDatasource():
     def file_name(self):
         """Return the actual CSV filename"""
         return self.filename
+    
+    def get_columns(self):
+        """Get list of column names from the DataFrame (same as Oracle connector)"""
+        return list(self.dataframe.columns)
 
     def add_or_update_datasource(self):
         """
@@ -212,17 +216,17 @@ class PandasFilesystemDatasource():
 
     def run_data_assistant(self, assistant_type="onboarding"):
         """
-        Run Great Expectations Data Assistant for automatic profiling
+        Run Great Expectations Data Assistant for automatic profiling (Fluent API)
         
         Params:
             assistant_type (str): Type of data assistant ('onboarding' or 'missingness')
         """
         try:
-            # Set up datasource
+            # Set up datasource and asset (Fluent API)
             self.add_or_update_datasource()
             
-            # Create batch request
-            batch_request = self.configure_datasource()
+            # Create batch request with DataFrame (Fluent API)
+            batch_request = self.get_batch_request()
             
             # Create suite name
             assistant_suite_name = f"{self.datasource_name}_{assistant_type}_suite"
@@ -235,7 +239,7 @@ class PandasFilesystemDatasource():
             except:
                 pass
             
-            # Create validator with new suite
+            # Create validator with new suite (Fluent API)
             validator = self.context.get_validator(
                 batch_request=batch_request,
                 create_expectation_suite_with_name=assistant_suite_name
@@ -251,7 +255,21 @@ class PandasFilesystemDatasource():
                 raise ValueError(f"Unknown assistant type: {assistant_type}")
             
             # Get and save the expectation suite
-            generated_suite = result.get_expectation_suite(expectation_suite_name=f"{assistant_suite_name}_final")
+            # Debug: Check what type result is
+            print(f"Data Assistant result type: {type(result)}")
+            print(f"Data Assistant result: {result}")
+            
+            # Try different ways to get the expectation suite
+            try:
+                # Method 1: Direct call (Oracle pattern)
+                generated_suite = result.get_expectation_suite(expectation_suite_name=f"{assistant_suite_name}_final")
+            except AttributeError:
+                try:
+                    # Method 2: If result is a dict, try to get the suite from context
+                    generated_suite = self.context.get_expectation_suite(f"{assistant_suite_name}_final")
+                except:
+                    # Method 3: Try to get the suite that was created
+                    generated_suite = self.context.get_expectation_suite(assistant_suite_name)
             
             # Enhance Data Assistant expectations with code display metadata
             from helpers.code_display_enhancer import enhance_expectation_with_code

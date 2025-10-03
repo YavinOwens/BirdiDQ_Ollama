@@ -216,15 +216,27 @@ def run_data_assistant(DQ_APP, key):
                 st.success(f'✅ {assistant_type} completed successfully!')
                 
                 # Display results summary
-                # Get the suite name that was used in run_data_assistant
-                suite_name = f"{DQ_APP.table_name}_{assistant_key}_suite_final"
-                suite = result.get_expectation_suite(expectation_suite_name=suite_name)
+                # Handle both dict result (filesystem) and object result (database)
+                if isinstance(result, dict):
+                    # Filesystem connector returns a dict
+                    suite_name = result.get("suite_name", f"{DQ_APP.table_name}_{assistant_key}_suite_final")
+                    expectations_count = result.get("expectations_count", 0)
+                    checkpoint_name = result.get("checkpoint_name", "")
+                    
+                    # Get the suite from context
+                    suite = DQ_APP.context.get_expectation_suite(suite_name)
+                else:
+                    # Database connector returns an object with get_expectation_suite method
+                    suite_name = f"{DQ_APP.table_name}_{assistant_key}_suite_final"
+                    suite = result.get_expectation_suite(expectation_suite_name=suite_name)
+                    expectations_count = len(suite.expectations)
+                    checkpoint_name = f"{suite_name}_checkpoint"
                 
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     st.metric("Suite Name", suite.expectation_suite_name.replace('_', ' ').title())
                 with col2:
-                    st.metric("Expectations Generated", len(suite.expectations))
+                    st.metric("Expectations Generated", expectations_count)
                 with col3:
                     st.metric("Status", "✓ Validated")
                 

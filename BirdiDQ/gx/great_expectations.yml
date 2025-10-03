@@ -62,6 +62,19 @@ datasources:
         class_name: InferredAssetSqlDataConnector
         module_name: great_expectations.datasource.data_connector
         include_schema_name: true
+  Housing:
+    class_name: Datasource
+    module_name: great_expectations.datasource
+    execution_engine:
+      class_name: PandasExecutionEngine
+      module_name: great_expectations.execution_engine
+    data_connectors:
+      runtime_connector:
+        name: runtime_connector
+        class_name: RuntimeDataConnector
+        module_name: great_expectations.datasource.data_connector
+        batch_identifiers:
+          - run_id
 config_variables_file_path: uncommitted/config_variables.yml
 
 # The plugins_directory will be added to your python path for custom modules
@@ -173,3 +186,9 @@ fluent_datasources:
         schema_name:
     connection_string: 
       postgresql+psycopg2://try_gx:try_gx@postgres.workshops.greatexpectations.io/gx_example_db
+  pandas_filesystem_Housing:
+    type: pandas
+    assets:
+      Housing:
+        type: dataframe
+        batch_metadata: {}
