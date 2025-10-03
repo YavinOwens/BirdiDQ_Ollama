@@ -1,0 +1,24 @@
+{
+  "generation_time": "2025-10-03T17:23:26.475574",
+  "data_sources": {
+    "spark": {
+      "source": "spark_professional",
+      "asset": "nyc_taxi_spark"
+    }
+  },
+  "expectation_suites": {
+    "spark_missingness": 19,
+    "spark_onboarding": 55,
+    "manual_business_rules": 3
+  },
+  "checkpoint_results": {
+    "spark_missingness_cp": true,
+    "spark_onboarding_cp": false,
+    "manual_business_spark_cp": true
+  },
+  "spark_info": {
+    "spark_version": "4.0.0",
+    "dataframe_rows": 1000,
+    "dataframe_columns": 19
+  }
+}
