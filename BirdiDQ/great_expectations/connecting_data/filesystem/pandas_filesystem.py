@@ -109,21 +109,78 @@ class PandasFilesystemDatasource():
     
     def run_expectation(self, expectation):
         """
-        Run your dataquality checks here
+        Run your data quality checks here - robustly handles multiple expectation formats (same as Oracle)
         """
-        validator, batch_request = self.get_validator()
-        def my_function(expectation, validator):
-            local_vars = {"validator": validator}
-            exec(f"expectation_result = validator.{expectation}", globals(), local_vars)
-            return local_vars.get("expectation_result")
-        
-        expectation_result = my_function(expectation, validator)
-        exec(f"expectation_result = validator.{expectation}")
-
-        validator.save_expectation_suite(discard_failed_expectations=False)
-        self.run_ge_checkpoint(batch_request)
-        #self.context.build_data_docs()
-        return expectation_result
+        try:
+            validator, batch_request = self.get_validator()
+            
+            # Import necessary GX expectations
+            print(f"\n{'='*60}")
+            print(f"EXPECTATION INPUT (raw):")
+            print(f"{expectation}")
+            print(f"{'='*60}\n")
+            
+            # Process the expectation code - it may contain multiple lines
+            expectation_lines = [line.strip() for line in expectation.split('\n') if line.strip()]
+            print(f"Parsed into {len(expectation_lines)} lines")
+            
+            # Set up clean execution environment (same as Oracle)
+            execution_env = {"validator": validator}
+            
+            results = []
+            for idx, line in enumerate(expectation_lines, 1):
+                if not line or line.startswith('#'):
+                    print(f"Line {idx}: Skipping (empty or comment)")
+                    continue
+                
+                print(f"\nLine {idx}: Attempting to execute:")
+                print(f"  '{line}'")
+                
+                try:
+                    # Execute expectation directly (same as Oracle)
+                    # The line already contains "validator.expect_..." so we execute it as-is
+                    exec(f"result = {line}", execution_env)
+                    result = execution_env.get("result")
+                    
+                    if result:
+                        results.append(result)
+                        print(f"  ✓ SUCCESS: Expectation executed and added to suite")
+                        if hasattr(result, 'success'):
+                            print(f"    Validation result: {result.success}")
+                    else:
+                        print(f"  ✗ FAILED: No result returned")
+                    
+                except Exception as e:
+                    print(f"  ✗ FAILED during execution: {line}")
+                    print(f"    Error type: {type(e).__name__}")
+                    print(f"    Error message: {str(e)[:200]}")
+                    
+                    # For metric errors, just skip - the expectation wasn't added
+                    print(f"    Skipping this expectation - it cannot be validated with current engine")
+                    continue
+            
+            print(f"\n{'='*60}")
+            print(f"EXECUTION SUMMARY:")
+            print(f"  Lines processed: {len(expectation_lines)}")
+            print(f"  Successful: {len(results)}")
+            print(f"  Failed: {len(expectation_lines) - len(results)}")
+            print(f"{'='*60}\n")
+            
+            # Save the expectation suite with all expectations
+            validator.save_expectation_suite(discard_failed_expectations=False)
+            
+            # Verify expectations were saved
+            saved_suite = self.context.get_expectation_suite(self.expectation_suite_name)
+            print(f"Suite '{self.expectation_suite_name}' now has {len(saved_suite.expectations)} expectations")
+            
+            # Run checkpoint
+            self.run_ge_checkpoint(batch_request)
+            
+            return results[0] if results else None
+            
+        except Exception as e:
+            print(f"Error in run_expectation: {e}")
+            raise
     
     def add_or_update_ge_checkpoint(self):
         """
