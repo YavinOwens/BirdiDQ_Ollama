@@ -1,0 +1,84 @@
+# Great Expectations 1.0.0a4 Configuration
+# =============================================================================
+# This is a new configuration file compatible with GX 1.0.0a4
+# Based on the default schema from DataContextConfig
+# =============================================================================
+
+config_version: 3
+
+# Store configurations
+stores:
+  expectations_store:
+    class_name: ExpectationsStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: expectations/
+  
+  validation_results_store:
+    class_name: ValidationResultsStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: uncommitted/validations/
+  
+  validation_definition_store:
+    class_name: ValidationDefinitionStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: validation_definitions/
+  
+  suite_parameter_store:
+    class_name: SuiteParameterStore
+  
+  checkpoint_store:
+    class_name: CheckpointStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      suppress_store_backend_id: true
+      base_directory: checkpoints/
+
+# Fluent datasources (new in GX 1.0+)
+fluent_datasources:
+  # Oracle datasource
+  oracle_pandas_TRANSACTIONS:
+    type: pandas
+    name: oracle_pandas_TRANSACTIONS
+    assets:
+      TRANSACTIONS:
+        type: dataframe
+        name: TRANSACTIONS
+  
+  # PostgreSQL datasource  
+  nyc_taxi_data:
+    type: sql
+    name: nyc_taxi_data
+    connection_string: postgresql+psycopg2://try_gx:try_gx@postgres.workshops.greatexpectations.io/gx_example_db
+    assets:
+      yellow_tripdata_sample_2019_01:
+        type: table
+        name: yellow_tripdata_sample_2019_01
+  
+  # Filesystem datasource
+  pandas_filesystem_Housing:
+    type: pandas
+    name: pandas_filesystem_Housing
+    assets:
+      Housing:
+        type: dataframe
+        name: Housing
+
+# Data Docs sites
+data_docs_sites:
+  local_site:
+    class_name: SiteBuilder
+    show_how_to_buttons: true
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: uncommitted/data_docs/local_site/
+    site_index_builder:
+      class_name: DefaultSiteIndexBuilder
+
+# Analytics (optional)
+analytics_enabled: false
+
+# Plugins directory
+plugins_directory: plugins/

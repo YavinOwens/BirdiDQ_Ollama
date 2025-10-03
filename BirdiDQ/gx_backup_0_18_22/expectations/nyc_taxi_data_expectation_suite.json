@@ -1,0 +1,24 @@
+{
+  "data_asset_type": null,
+  "expectation_suite_name": "nyc_taxi_data_expectation_suite",
+  "expectations": [
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "rate_code_id"
+      },
+      "meta": {
+        "notes": {
+          "content": [
+            "### \ud83d\udcdd Implementation Details\n\n**Python Code:**\n```python\nvalidator.expect_column_values_to_not_be_null(column=\"rate_code_id\")\n```\n\n**Execution Engine:** PostgreSQL (SQL)\n\n\n**Approximate SQL Query:**\n```sql\n-- Check for NULL values in rate_code_id\nSELECT COUNT(*) as null_count\nFROM {{table}}\nWHERE rate_code_id IS NULL;\n```\n\n**Note:** This is a simplified example. Great Expectations generates optimized SQL with batching, sampling, and additional logic.\n"
+          ],
+          "format": "markdown"
+        }
+      }
+    }
+  ],
+  "ge_cloud_id": null,
+  "meta": {
+    "great_expectations_version": "0.18.22"
+  }
+}
