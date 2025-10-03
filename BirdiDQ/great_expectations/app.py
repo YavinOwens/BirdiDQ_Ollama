@@ -308,7 +308,9 @@ def main():
             data = read_local_filesystem_tb(local_filesystem_path, data_source, mapping)
             display_data_preview(data)
 
-            DQ_APP = PandasFilesystemDatasource(data_source, data)
+            # Get the actual CSV filename from mapping
+            actual_filename = mapping.get(data_source, f"{data_source}.csv")
+            DQ_APP = PandasFilesystemDatasource(data_source, data, filename=actual_filename)
             perform_data_quality_checks(DQ_APP, key)
             next_steps(DQ_APP, data_owners, data_source, key)
 

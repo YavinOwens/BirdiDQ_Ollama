@@ -11,11 +11,17 @@ class PandasFilesystemDatasource():
     """
     Run Data Quality checks on Local Filesystem data
     """
-    def __init__(self, datasource_name, dataframe):
+    def __init__(self, datasource_name, dataframe, filename=None):
         """ 
         Init class attributes
+        
+        Args:
+            datasource_name (str): The name identifier for the datasource (e.g., "Customers")
+            dataframe (pd.DataFrame): The pandas DataFrame containing the data
+            filename (str, optional): The actual CSV filename (e.g., "customers.csv")
         """
         self.datasource_name = datasource_name
+        self.filename = filename or f"{datasource_name}.csv"
         self.expectation_suite_name = f"{datasource_name}_expectation_suite"
         self.checkpoint_name = f"{datasource_name}_checkpoint"
         self.dataframe = dataframe
@@ -25,10 +31,15 @@ class PandasFilesystemDatasource():
     @property
     def table_name(self):
         """
-        Return the datasource name as table_name for consistency with database connectors
-        For filesystem data, this represents the file/dataset identifier
+        Return the datasource name for compatibility with app.py code that expects table_name
+        Note: For filesystem data, this is really a file identifier, not a database table
         """
         return self.datasource_name
+    
+    @property
+    def file_name(self):
+        """Return the actual CSV filename"""
+        return self.filename
 
     def add_or_update_datasource(self):
         """

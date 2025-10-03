@@ -107,19 +107,44 @@ def get_expectations(prompt, client=None, model_name=None, available_columns=Non
             )
             
             # Extract the response text
-            # For reasoning models, check if thinking field has content and response is empty
             generated_code = response.get('response', '').strip()
-            thinking_content = response.get('thinking', '').strip()
-            
-            # If response is empty but thinking has content, use thinking
-            if not generated_code and thinking_content:
-                generated_code = thinking_content
             
             # Clean up the response to extract just the code
             if "```python" in generated_code:
                 generated_code = generated_code.split("```python")[1].split("```")[0].strip()
             elif "```" in generated_code:
                 generated_code = generated_code.split("```")[1].split("```")[0].strip()
+            
+            # Additional cleaning: Extract only validator.expect_* lines
+            # This filters out reasoning/thinking text
+            lines = generated_code.split('\n')
+            validator_lines = []
+            
+            for line in lines:
+                line = line.strip()
+                # Only include lines that start with validator.expect_
+                # or are continuation lines (for multi-line expectations)
+                if line.startswith('validator.expect_'):
+                    validator_lines.append(line)
+                elif validator_lines and line and not any(keyword in line.lower() for keyword in 
+                    ['we need', 'actually', 'wait', 'so code:', 'but', 'output:', 'means', 'they\'d use', 'should use']):
+                    # This might be a continuation line (e.g., multi-line expectation)
+                    validator_lines.append(line)
+            
+            # If we found validator lines, use those
+            if validator_lines:
+                generated_code = '\n'.join(validator_lines)
+            
+            # If the generated code still contains reasoning keywords, try to extract the last validator call
+            reasoning_keywords = ['we need to produce', 'actually', 'wait:', 'so code:', 'but the', 'means']
+            if any(keyword in generated_code.lower() for keyword in reasoning_keywords):
+                # Find all validator.expect_ patterns
+                import re
+                validator_pattern = r'validator\.expect_[a-z_]+\([^)]*\)'
+                matches = re.findall(validator_pattern, generated_code, re.IGNORECASE)
+                if matches:
+                    # Use the last complete match (usually the final answer)
+                    generated_code = '\n'.join(matches)
             
             return generated_code
             
