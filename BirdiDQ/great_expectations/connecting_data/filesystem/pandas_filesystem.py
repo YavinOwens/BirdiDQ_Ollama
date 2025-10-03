@@ -43,56 +43,68 @@ class PandasFilesystemDatasource():
 
     def add_or_update_datasource(self):
         """
-        Create data source if it does not exist or updating existing one
+        Create data source using Fluent API (consistent with Oracle/PostgreSQL)
         """
-        datasource_yaml = rf"""
-        name: {self.datasource_name}
-        class_name: Datasource
-        execution_engine:
-            class_name: PandasExecutionEngine
-        data_connectors:
-            runtime_connector:
-                class_name: RuntimeDataConnector
-                batch_identifiers:
-                    - run_id
-        """
-        self.context.test_yaml_config(datasource_yaml)
-        self.context.add_datasource(**yaml.load(datasource_yaml, Loader=ruamel.yaml.Loader))
+        try:
+            # Use unique datasource name for this file
+            datasource_name = f"pandas_filesystem_{self.datasource_name}"
+            
+            # Check if pandas datasource already exists
+            try:
+                self.data_source = self.context.get_datasource(datasource_name)
+                print(f"Using existing datasource: {datasource_name}")
+            except:
+                # Create pandas datasource using Fluent API (same as Oracle)
+                self.data_source = self.context.sources.add_pandas(datasource_name)
+                print(f"Created new datasource: {datasource_name}")
+            
+            # Check if data asset exists
+            try:
+                self.data_asset = self.data_source.get_asset(self.datasource_name)
+                print(f"Using existing asset: {self.datasource_name}")
+            except:
+                # Create dataframe asset (same as Oracle)
+                self.data_asset = self.data_source.add_dataframe_asset(name=self.datasource_name)
+                print(f"Created new asset: {self.datasource_name}")
+                
+            return self.data_source, self.data_asset
+            
+        except Exception as e:
+            print(f"Error in add_or_update_datasource: {e}")
+            raise
 
-    def configure_datasource(self):
+    def get_batch_request(self):
         """
-        Add a RuntimeDataConnector hat uses an in-memory DataFrame to a Datasource configuration
+        Create a batch request for DataFrame using Fluent API (same as Oracle)
         """
-        batch_request = RuntimeBatchRequest(
-            datasource_name= self.datasource_name,
-            data_connector_name= "runtime_connector",
-            data_asset_name=f"{self.datasource_name}_{self.partition_date.strftime('%Y%m%d')}",
-            batch_identifiers={
-                "run_id": f'''
-                {self.datasource_name}_partition_date={self.partition_date.strftime('%Y%m%d')}
-                ''',
-            },
-            runtime_parameters={"batch_data": self.dataframe}
-        )
-        return batch_request
+        # Build batch request with the DataFrame
+        return self.data_asset.build_batch_request(dataframe=self.dataframe)
     
-    def add_or_update_ge_suite(self):
-        """
-        create expectation suite if not exist and update it if there is already a suite
-        """
-        self.context.add_or_update_expectation_suite(
-                     expectation_suite_name = self.expectation_suite_name)
-
     def get_validator(self):
         """
-        Retrieve a validator object for a fine grain adjustment on the expectation suite.
+        Retrieve a validator object using Fluent API (consistent with Oracle/PostgreSQL)
         """
+        # Set up datasource and asset (Pandas-based with DataFrame)
         self.add_or_update_datasource()
-        batch_request = self.configure_datasource()
-        self.add_or_update_ge_suite()
-        validator = self.context.get_validator(batch_request=batch_request,
-                                               expectation_suite_name=self.expectation_suite_name,
-                                        )
+        
+        # Create batch request with DataFrame
+        batch_request = self.get_batch_request()
+        
+        # Create/get expectation suite
+        try:
+            self.context.add_or_update_expectation_suite(
+                expectation_suite_name=self.expectation_suite_name
+            )
+        except:
+            pass
+        
+        # Get validator
+        validator = self.context.get_validator(
+            batch_request=batch_request,
+            expectation_suite_name=self.expectation_suite_name,
+        )
+        
+        print(f"✅ Validator created successfully using Pandas Fluent API")
         return validator, batch_request
     
     def run_expectation(self, expectation):
