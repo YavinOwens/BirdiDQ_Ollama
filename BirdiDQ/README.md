@@ -6,6 +6,11 @@ BirdiDQ is an intuitive and user-friendly data quality application that allows y
 
 ![BirdiDQ Screenshot 2](./great_expectations/img/screenshot1.png)
 
+## 📚 Documentation
+
+- **[Architecture Overview](./ARCHITECTURE.md)** - High-level system architecture with Mermaid diagrams
+- **[Quality Gates & Performance Analysis](./ARCHITECTURE_QUALITY_GATES.md)** - Detailed analysis of bottlenecks and optimization strategies
+
 ## Note
 
 BirdiDQ is under development and is an open source project. Contributions are welcomed!
