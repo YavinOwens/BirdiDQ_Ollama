@@ -200,6 +200,185 @@ sequenceDiagram
     DataDocs->>User: Open HTML Report
 ```
 
+## Database-Specific Architecture
+
+### High-Level Database Architecture
+This diagram shows the complete database validation workflow with specific components for PostgreSQL and Oracle databases.
+
+```mermaid
+graph TB
+    subgraph "People Layer"
+        A[Database Administrator] -->|Connects to| B[Database Selection]
+        A -->|Natural Language Query| C[Query Input Interface]
+    end
+
+    subgraph "Database Access Layer"
+        B -->|Environment Config| D[Connection Manager]
+        D -->|Test Connection| E[Database Browser]
+        E -->|List Tables| F[Schema Inspector]
+        F -->|Table Selection| G[Data Preview]
+    end
+
+    subgraph "Database-Specific Connectors"
+        G -->|PostgreSQL| H[PostgreSQLDatasource]
+        G -->|Oracle DB| I[OracleDatasource]
+        H -->|SQLAlchemy Engine| J[PostgreSQL Executor]
+        I -->|SQLAlchemy Engine| K[Oracle Executor]
+    end
+
+    subgraph "LLM Process"
+        C -->|API Request| L[Ollama Cloud API]
+        L -->|Model: gpt-oss:20b| M[Natural Language Parser]
+        M -->|Context: Schema Info| N[Expectation Generator]
+        N -->|Generates SQL-Based| O[GX Expectation Code]
+        O -->|With Table Schema| P[Code Display]
+    end
+
+    subgraph "Database Validation Process"
+        P -->|Execute Code| Q[SqlAlchemyExecutionEngine]
+        Q -->|Create Batch| R[Database Context]
+        R -->|Push-down Execution| S[SQL Query Engine]
+        S -->|Run in Database| T[Validation Execution]
+        T -->|SQL Results| U[Checkpoint Runner]
+        U -->|Aggregate Results| V[Expectation Suite]
+    end
+
+    subgraph "Outputs Process"
+        V -->|Generate Metrics| W[Validation Results]
+        W -->|Build Reports| X[Data Docs Builder]
+        X -->|HTML + Charts| Y[Interactive Reports]
+        Y -->|Database Metrics| Z[Browser Display]
+        W -->|Success/Failure| AA[Database Dashboard]
+        AA -->|Live Data Status| BB[Streamlit UI]
+    end
+
+    subgraph "Database Storage"
+        V -.->|Save Suite| CC[(Expectations Store)]
+        U -.->|Save Results| DD[(Validations Store)]
+        X -.->|Write HTML| EE[(Data Docs Store)]
+        BB -.->|Cache Schema| FF[(Schema Cache)]
+    end
+
+    style A fill:#e1f5ff
+    style L fill:#fff3e0
+    style Q fill:#f3e5f5
+    style T fill:#e8f5e9
+    style CC fill:#fce4ec
+    style DD fill:#fce4ec
+    style EE fill:#fce4ec
+    style FF fill:#fce4ec
+```
+
+### Database Components Detail
+
+#### 1. Database Access Layer
+**Components:**
+- **Connection Manager:** Manages database connections using environment variables
+- **Database Browser:** Lists available databases and schemas
+- **Schema Inspector:** Extracts table structures, column types, and constraints
+- **Data Preview:** Shows sample data without loading entire tables
+
+**Supported Databases:**
+- **PostgreSQL:** Via `psycopg2` driver and `SqlAlchemyExecutionEngine`
+- **Oracle Database:** Via `cx_Oracle` driver and `SqlAlchemyExecutionEngine`
+
+#### 2. Database-Specific Connectors
+**PostgreSQLDatasource:**
+- Connection via `POSTGRES_CONNECTION_STRING` environment variable
+- Uses Fluent API `sources.add_postgres()`
+- Supports complex queries and schema introspection
+- Automatic batch request creation for tables
+
+**OracleDatasource:**
+- Connection via `ORACLE_CONNECTION_STRING` environment variable  
+- Uses Fluent API `sources.add_sql()` with Oracle driver
+- Enterprise-grade features and performance
+- Handles Oracle-specific data types and functions
+
+#### 3. Database Validation Process
+**SqlAlchemyExecutionEngine:**
+- **Push-down Execution:** Runs expectations as SQL queries in the database
+- **Performance Optimization:** Leverages database indexes and query planning
+- **Scalability:** Handles tables with millions of rows efficiently
+- **Resource Efficiency:** Minimal data transfer between application and database
+
+**Query Optimization Features:**
+- Automatic SQL query generation from expectations
+- Database-specific optimizations (PostgreSQL vs Oracle)
+- Batch processing for large tables
+- Connection pooling for performance
+
+#### 4. Database-Specific Workflows
+
+**PostgreSQL Validation Flow:**
+```mermaid
+graph LR
+    A[User Query] -->|Check columns| B[Schema Validation]
+    B -->|Generate SQL| C[PostgreSQL Engine]
+    C -->|Execute Query| D[PostgreSQL DB]
+    D -->|Return Results| E[GX Validation]
+    E -->|Aggregate Metrics| F[Quality Report]
+    
+    style C fill:#336791
+    style D fill:#336791
+```
+
+**Oracle Validation Flow:**
+```mermaid
+graph LR
+    A[User Query] -->|Check schema| B[Oracle Schema Check]
+    B -->|Generate SQL| C[Oracle Engine]
+    C -->|Execute Query| D[Oracle DB]
+    D -->|Return Results| E[GX Validation]
+    E -->|Aggregate Metrics| F[Quality Report]
+    
+    style C fill:#F80000
+    style D fill:#F80000
+```
+
+### Database Performance Characteristics
+
+#### Query Execution Performance
+- **Small tables (< 10K rows):** 200-500ms
+- **Medium tables (10K-100K rows):** 500ms-2s
+- **Large tables (100K-1M rows):** 2-10s  
+- **Very large tables (> 1M rows):** 10s-60s
+
+#### Performance Optimization
+- **Index Usage:** Automatically leverages existing database indexes
+- **Query Planning:** Database query planner optimizes expectations
+- **Parallel Execution:** Runs independent expectations concurrently (when possible)
+- **Materialized Views:** Can utilize pre-computed aggregations
+
+#### Database-Specific Features
+
+**PostgreSQL Advantages:**
+- Advanced JSON data type support
+- Rich indexing capabilities
+- Excellent Open Source ecosystem
+- Cost-effective scaling
+
+**Oracle Advantages:**
+- Enterprise-grade reliability and features
+- Advanced partitioning and compression
+- Comprehensive monitoring and analytics
+- High-performance OLTP support
+
+### Database Security & Compliance
+
+#### Connection Security
+- **Environment Variables:** Database credentials stored securely
+- **Connection Encryption:** SSL/TLS for database connections
+- **Access Control:** Database-level permissions and roles
+- **Audit Logging:** Comprehensive validation result logging
+
+#### Data Privacy
+- **In-place Validation:** No data copied from database
+- **Schema Only Transfer:** Only metadata sent for context
+- **Local Storage:** Validation results stored locally
+- **Compliance Ready:** Supports GDPR, HIPAA, and SOC2 requirements
+
+
 ## Data Flow Architecture
 
 ```mermaid
