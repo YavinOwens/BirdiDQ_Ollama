@@ -10,7 +10,12 @@ from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileT
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
-load_dotenv('/Users/yavin/python_projects/ollama_jupyter/.env')
+from pathlib import Path
+
+# Load environment variables from main project directory
+project_root = Path(__file__).parent.parent.parent
+env_path = project_root / '.env'
+load_dotenv(env_path)
 # Get your SendGrid API key from the environment variable
 sendgrid_api_key = os.environ.get('SENDGRID_API_KEY')
 

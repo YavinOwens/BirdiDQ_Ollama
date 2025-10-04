@@ -1,9 +1,12 @@
 import ollama
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 
 # Load environment variables from main project directory
-load_dotenv('/Users/yavin/python_projects/ollama_jupyter/.env')
+# Use absolute path to ensure reliability
+env_path = '/Users/yavin/python_projects/ollama_jupyter/.env'
+load_dotenv(env_path)
 
 def load_ollama_client():
     """

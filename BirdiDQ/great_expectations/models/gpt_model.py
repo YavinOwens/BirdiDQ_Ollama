@@ -1,6 +1,8 @@
 from dotenv import load_dotenv, find_dotenv
 import os
-load_dotenv('/Users/yavin/python_projects/ollama_jupyter/.env')
+# Load environment variables from main project directory
+env_path = '/Users/yavin/python_projects/ollama_jupyter/.env'
+load_dotenv(env_path)
 
 
 def naturallanguagetoexpectation(sentence):

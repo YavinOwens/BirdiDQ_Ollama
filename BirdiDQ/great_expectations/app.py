@@ -13,7 +13,7 @@ from connecting_data.filesystem.pandas_filesystem import *
 from streamlit_extras.dataframe_explorer import dataframe_explorer
 from streamlit_extras.no_default_selectbox import selectbox
 
-local_filesystem_path = 'great_expectations/data/'
+local_filesystem_path = 'BirdiDQ/great_expectations/data/'
 session_state = st.session_state
 
 #data_owner_button_key = "data_owner_button_1"
@@ -27,23 +27,39 @@ st.set_page_config(
 st.title("❄️ BirdiDQ")
 st.markdown('<h1 style="font-size: 24px; font-weight: bold; margin-bottom: 0;">Welcome to your DQ App</h1>', unsafe_allow_html=True)
 
-with open("great_expectations/ui/side.md", "r", encoding="utf-8") as sidebar_file:
+with open("BirdiDQ/great_expectations/ui/side.md", "r", encoding="utf-8") as sidebar_file:
     sidebar_content = sidebar_file.read()
 
 # Display the DDL for the selected table
 st.sidebar.markdown(sidebar_content, unsafe_allow_html=True)
 
-def display_data_preview(data):
+def display_data_preview(data, key_suffix=""):
     """
     Display data for quick data exploration
     Params:
-        data (DataFrame) : Selected table on which to run DQ checks    
+        data (DataFrame) : Selected table on which to run DQ checks
+        key_suffix (str) : Suffix to make keys unique
     """
     try:
-        filtered_df = dataframe_explorer(data, case=False)
-        st.dataframe(filtered_df, width="stretch")
-    except:
-        raise Exception("Unable to preview data")
+        # Add a unique key to avoid conflicts
+        unique_key = f"data_preview_{key_suffix}_{hash(str(data.shape))}"
+        
+        # Show basic data info
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Total Rows", len(data))
+        with col2:
+            st.metric("Total Columns", len(data.columns));
+        with col3:
+            st.metric("Memory Usage", f"{data.memory_usage(deep=True).sum() / 1024:.1f} KB")
+        
+        # Show the data
+        st.dataframe(data, width="stretch", use_container_width=True)
+        
+    except Exception as e:
+        st.error(f"Unable to preview data: {str(e)}")
+        # Fallback to basic dataframe display
+        st.dataframe(data.head(10), width="stretch", use_container_width=True)
 
 
 def perform_data_quality_checks(DQ_APP, key):
@@ -145,11 +161,16 @@ def open_data_docs(DQ_APP, key):
     open_docs_button = st.button("Open Data Docs", key=key.format(name='data_docs'))
     if open_docs_button:
         try:
+            # Try to get the dynamic URL first (if validations have been run)
             data_docs_url = DQ_APP.context.get_docs_sites_urls()[0]['site_url']
             st.write(data_docs_url)
             webbrowser.open_new_tab(data_docs_url)
         except:
-            st.warning('Unable to open html report. Ensure that you have great_expectations/uncommited folder with validations and data_docs/local_site subfolders.', icon="⚠️")
+            # Fallback to the correct GX path
+            docs_path = "/Users/yavin/python_projects/ollama_jupyter/BirdiDQ/gx/uncommitted/data_docs/local_site/index.html"
+            file_url = f"file://{docs_path}"
+            st.write(f"Opening: {docs_path}")
+            webbrowser.open_new_tab(file_url)
 
 
 
@@ -173,7 +194,7 @@ def contact_data_owner(session_state, data_owners, data_source, key):
             recipient_email = st.text_input("Recipient Email", value=data_owners[data_source])
             subject = st.text_input("Subject", key=key.format(name='subject'))
             message = st.text_area("Message", key=key.format(name='message'))
-            attachement = "great_expectations/uncommitted/data_docs/local_site/index.html"
+            attachement = "uncommitted/data_docs/local_site/index.html"
                 
             if st.button("Send Email", key=key.format(name='email')):
                 send_email_with_attachment(sender_email, recipient_email, subject, message, attachement)
@@ -309,22 +330,82 @@ def main():
     t1,t2,t3 = st.tabs(['Local File System','PostgreSQL','Oracle']) 
 
     with t1:
-        mapping, data_owners = local_dataowners(local_filesystem_path)
-        tables = list(mapping.keys())
-        data_source = selectbox("Select table name", tables)
+        st.subheader("📁 Upload CSV File")
+        
+        # File upload functionality
+        uploaded_file = st.file_uploader(
+            "Choose a CSV file", 
+            type="csv",
+            help="Upload a CSV file to run data quality checks on it"
+        )
+        
+        if uploaded_file is not None:
+            try:
+                # Read the uploaded file
+                df = pd.read_csv(uploaded_file)
+                st.success(f"✅ File uploaded successfully! ({uploaded_file.name})")
+                
+                # Show basic info about the file
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("Rows", len(df))
+                with col2:
+                    st.metric("Columns", len(df.columns))
+                with col3:
+                    st.metric("Size", f"{len(uploaded_file.getvalue()) / 1024:.1f} KB")
+                
+                # Store the uploaded data in session state
+                session_state['uploaded_df'] = df
+                session_state['uploaded_file_name'] = uploaded_file.name
+                session_state['data_source'] = uploaded_file.name.split('.')[0]  # Use filename without extension
+                
+                # Show data preview
+                st.subheader("📊 Data Preview")
+                display_data_preview(df, "upload")
+                
+            except Exception as e:
+                st.error(f"❌ Error reading file: {str(e)}")
+        
+        # Separator
+        st.markdown("---")
+        st.subheader("📂 Or select from existing files")
+        
+        # Existing file functionality
+        try:
+            mapping, data_owners = local_dataowners(local_filesystem_path)
+            tables = list(mapping.keys())
+            
+            if tables:
+                data_source = selectbox("Select table name", tables)
+            else:
+                st.info("No CSV files found in the data directory. Upload a file above or add files to the data folder.")
+                data_source = None
+        except FileNotFoundError:
+            st.warning("Data directory not found. Please upload a file above or ensure the data directory exists.")
+            tables = []
+            data_source = None
 
-        if data_source:
+        if data_source or 'uploaded_df' in session_state:
             key = "filesystem_{name}"
-            # Display a preview of the data
-            st.subheader("Preview of the data:")
-            data = read_local_filesystem_tb(local_filesystem_path, data_source, mapping)
-            display_data_preview(data)
-
-            # Get the actual CSV filename from mapping
-            actual_filename = mapping.get(data_source, f"{data_source}.csv")
-            DQ_APP = PandasFilesystemDatasource(data_source, data, filename=actual_filename)
+            
+            # Use uploaded data if available, otherwise load from filesystem
+            if 'uploaded_df' in session_state:
+                data = session_state['uploaded_df']
+                st.subheader("📊 Preview of uploaded data:")
+                st.info(f"✅ Using uploaded file: {session_state['uploaded_file_name']}")
+                actual_filename = session_state['uploaded_file_name']
+                current_data_source = session_state['data_source']
+            else:
+                st.subheader("📊 Preview of local data:")
+                data = read_local_filesystem_tb(local_filesystem_path, data_source, mapping)
+                # Get the actual CSV filename from mapping
+                actual_filename = mapping.get(data_source, f"{data_source}.csv")
+                current_data_source = data_source
+            
+            display_data_preview(data, current_data_source)
+            DQ_APP = PandasFilesystemDatasource(current_data_source, data, filename=actual_filename)
             perform_data_quality_checks(DQ_APP, key)
-            next_steps(DQ_APP, data_owners, data_source, key)
+            next_steps(DQ_APP, data_owners, current_data_source, key)
 
     with t2:
         try:
@@ -336,7 +417,7 @@ def main():
                 # Display a preview of the data
                 st.subheader("Preview of the data:")
                 data = read_pg_tables(data_source)
-                display_data_preview(data)
+                display_data_preview(data, f"pg_{data_source}")
         
                 DQ_APP = PostgreSQLDatasource('gx_example_db', data_source)
                 perform_data_quality_checks(DQ_APP, key)
@@ -355,7 +436,7 @@ def main():
                 # Display a preview of the data
                 st.subheader("Preview of the data:")
                 data = read_oracle_tables(data_source)
-                display_data_preview(data)
+                display_data_preview(data, f"ora_{data_source}")
         
                 DQ_APP = OracleDatasource('oracle_db', data_source)
                 perform_data_quality_checks(DQ_APP, key)
@@ -365,7 +446,7 @@ def main():
             st.info("Make sure your Oracle Docker container is running and accessible.")
 
  
-local_css("great_expectations/ui/front.css")
+local_css("BirdiDQ/great_expectations/ui/front.css")
 remote_css('https://fonts.googleapis.com/icon?family=Material+Icons')
 remote_css('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700&display=swap')
 # Run the app

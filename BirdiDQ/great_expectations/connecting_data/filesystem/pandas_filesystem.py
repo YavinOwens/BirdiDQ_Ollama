@@ -200,19 +200,42 @@ class PandasFilesystemDatasource():
 
     def run_ge_checkpoint(self, batch_request):
         """
-        Run GE checkpoint
+        Run GE checkpoint to validate expectations and generate Data Docs with results
         """
-        self.add_or_update_ge_checkpoint()
-
-        self.context.run_checkpoint(
-                checkpoint_name = self.checkpoint_name,
+        try:
+            # Create/update checkpoint configuration
+            self.add_or_update_ge_checkpoint()
+            
+            # Run checkpoint with validation - this will actually execute expectations
+            print(f"Running checkpoint '{self.checkpoint_name}' to validate expectations...")
+            checkpoint_result = self.context.run_checkpoint(
+                checkpoint_name=self.checkpoint_name,
                 validations=[
-                            {
-                             "batch_request": batch_request,
-                            "expectation_suite_name": self.expectation_suite_name,
-                            }
-                            ],
-                )
+                    {
+                        "batch_request": batch_request,
+                        "expectation_suite_name": self.expectation_suite_name,
+                    }
+                ],
+            )
+            
+            print(f"✓ Checkpoint executed: {checkpoint_result.success}")
+            print(f"✓ Validation results saved to Data Docs")
+            
+            # Build data docs to show results
+            self.context.build_data_docs()
+            
+            return checkpoint_result
+            
+        except Exception as e:
+            print(f"Warning: Checkpoint execution failed: {e}")
+            # If checkpoint fails, still build docs with just expectations (no validation results)
+            self.context.build_data_docs()
+            
+            # Return a mock checkpoint result
+            return type('obj', (object,), {
+                'success': False,
+                'run_results': {}
+            })()
 
     def run_data_assistant(self, assistant_type="onboarding"):
         """

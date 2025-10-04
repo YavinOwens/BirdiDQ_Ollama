@@ -15,7 +15,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from helpers.code_display_enhancer import enhance_expectation_with_code 
 
-load_dotenv('/Users/yavin/python_projects/ollama_jupyter/.env')
+from pathlib import Path
+
+# Load environment variables from main project directory
+project_root = Path(__file__).parent.parent.parent.parent
+env_path = project_root / '.env'
+load_dotenv(env_path)
 
 # Get your postgresql connection string from the environment variable
 POSTGRES_CONNECTION_STRING = os.environ.get('POSTGRES_CONNECTION_STRING')
