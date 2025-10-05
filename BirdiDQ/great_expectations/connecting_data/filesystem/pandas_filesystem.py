@@ -27,7 +27,7 @@ class PandasFilesystemDatasource():
         self.dataframe = dataframe
         self.partition_date = datetime.datetime.now()
         # Use explicit context directory to match where app.py expects data docs
-        context_root_dir = "/Users/yavin/python_projects/ollama_jupyter/BirdiDQ/gx"
+        context_root_dir = "gx"
         self.context = ge.get_context(context_root_dir=context_root_dir)
     
     @property

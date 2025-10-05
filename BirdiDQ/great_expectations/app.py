@@ -4,6 +4,7 @@ import pandas as pd
 import time
 import random
 import webbrowser
+import os
 from models.gpt_model import naturallanguagetoexpectation
 from models.ollama_model import get_expectations, load_ollama_client, test_ollama_connection
 from helpers.utils import * 
@@ -13,7 +14,7 @@ from connecting_data.filesystem.pandas_filesystem import *
 from streamlit_extras.dataframe_explorer import dataframe_explorer
 from streamlit_extras.no_default_selectbox import selectbox
 
-local_filesystem_path = 'BirdiDQ/great_expectations/data/'
+local_filesystem_path = 'great_expectations/data/'
 session_state = st.session_state
 
 #data_owner_button_key = "data_owner_button_1"
@@ -27,7 +28,7 @@ st.set_page_config(
 st.title("❄️ BirdiDQ")
 st.markdown('<h1 style="font-size: 24px; font-weight: bold; margin-bottom: 0;">Welcome to your DQ App</h1>', unsafe_allow_html=True)
 
-with open("BirdiDQ/great_expectations/ui/side.md", "r", encoding="utf-8") as sidebar_file:
+with open("great_expectations/ui/side.md", "r", encoding="utf-8") as sidebar_file:
     sidebar_content = sidebar_file.read()
 
 # Display the DDL for the selected table
@@ -166,11 +167,16 @@ def open_data_docs(DQ_APP, key):
             st.write(data_docs_url)
             webbrowser.open_new_tab(data_docs_url)
         except:
-            # Fallback to the correct GX path
-            docs_path = "/Users/yavin/python_projects/ollama_jupyter/BirdiDQ/gx/uncommitted/data_docs/local_site/index.html"
-            file_url = f"file://{docs_path}"
-            st.write(f"Opening: {docs_path}")
-            webbrowser.open_new_tab(file_url)
+            # Fallback to the correct GX path relative to the context
+            docs_path = "gx/uncommitted/data_docs/local_site/index.html"
+            if os.path.exists(docs_path):
+                file_url = f"file://{os.path.abspath(docs_path)}"
+                st.write(f"Opening: {docs_path}")
+                webbrowser.open_new_tab(file_url)
+            else:
+                st.warning("⚠️ No data docs found. Please run a validation first to generate data documentation.")
+                st.info("💡 Tip: Upload a CSV file or connect to a database and run validations to generate data docs.")
+                st.info(f"🔍 Looking for data docs at: {os.path.abspath(docs_path)}")
 
 
 
@@ -446,7 +452,7 @@ def main():
             st.info("Make sure your Oracle Docker container is running and accessible.")
 
  
-local_css("BirdiDQ/great_expectations/ui/front.css")
+local_css("great_expectations/ui/front.css")
 remote_css('https://fonts.googleapis.com/icon?family=Material+Icons')
 remote_css('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700&display=swap')
 # Run the app
