@@ -4,7 +4,7 @@ import pandas as pd
 import time
 import random
 import webbrowser
-import os
+from pathlib import Path
 from models.gpt_model import naturallanguagetoexpectation
 from models.ollama_model import get_expectations, load_ollama_client, test_ollama_connection
 from helpers.utils import * 
@@ -168,15 +168,15 @@ def open_data_docs(DQ_APP, key):
             webbrowser.open_new_tab(data_docs_url)
         except:
             # Fallback to the correct GX path relative to the context
-            docs_path = "gx/uncommitted/data_docs/local_site/index.html"
-            if os.path.exists(docs_path):
-                file_url = f"file://{os.path.abspath(docs_path)}"
+            docs_path = Path("gx/uncommitted/data_docs/local_site/index.html")
+            if docs_path.exists():
+                file_url = f"file://{docs_path.resolve()}"
                 st.write(f"Opening: {docs_path}")
                 webbrowser.open_new_tab(file_url)
             else:
                 st.warning("⚠️ No data docs found. Please run a validation first to generate data documentation.")
                 st.info("💡 Tip: Upload a CSV file or connect to a database and run validations to generate data docs.")
-                st.info(f"🔍 Looking for data docs at: {os.path.abspath(docs_path)}")
+                st.info(f"🔍 Looking for data docs at: {docs_path.resolve()}")
 
 
 

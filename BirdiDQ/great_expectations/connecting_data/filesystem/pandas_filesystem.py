@@ -5,7 +5,7 @@ from great_expectations.checkpoint.checkpoint import SimpleCheckpoint
 from ruamel import yaml
 import ruamel
 import pandas as pd
-import os
+from pathlib import Path
 
 class PandasFilesystemDatasource():
     """
@@ -27,8 +27,8 @@ class PandasFilesystemDatasource():
         self.dataframe = dataframe
         self.partition_date = datetime.datetime.now()
         # Use explicit context directory to match where app.py expects data docs
-        context_root_dir = "gx"
-        self.context = ge.get_context(context_root_dir=context_root_dir)
+        context_root_dir = Path("gx")
+        self.context = ge.get_context(context_root_dir=str(context_root_dir))
     
     @property
     def table_name(self):
@@ -377,12 +377,13 @@ def get_mapping(folder_path):
     """
     mapping_dict = {}
     data_owners = {}
-    for file_name in os.listdir(folder_path):
-        if file_name.endswith('.csv'):
-            name_without_extension = os.path.splitext(file_name)[0]
-            name_with_uppercase = name_without_extension.capitalize()
-            mapping_dict[name_with_uppercase] = file_name
-            data_owners[name_with_uppercase] = "dioula01@gmail.com" #default DO for all files. To be modified
+    folder_path_obj = Path(folder_path)
+    for file_path in folder_path_obj.glob("*.csv"):
+        file_name = file_path.name
+        name_without_extension = file_path.stem
+        name_with_uppercase = name_without_extension.capitalize()
+        mapping_dict[name_with_uppercase] = file_name
+        data_owners[name_with_uppercase] = "dioula01@gmail.com" #default DO for all files. To be modified
     return mapping_dict, data_owners
 
 
