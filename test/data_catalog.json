@@ -1,0 +1,363 @@
+{
+  "metadata": {
+    "generated_on": "2025-10-07T16:36:43.994450",
+    "total_validation_files": 1,
+    "analysis_period": "20251005T180117.592126Z to 20251005T180117.592126Z",
+    "great_expectations_version": "0.18.22"
+  },
+  "data_assets": {
+    "nyc_taxi_data": {
+      "name": "nyc_taxi_data",
+      "type": "table",
+      "table_name": "nyc_taxi_data",
+      "schema_name": null,
+      "datasource": "postgres_sql_nyc_taxi_data",
+      "data_connector": "fluent",
+      "validation_runs": [
+        {
+          "run_id": "20251005-180117",
+          "timestamp": "20251005T180117.592126Z",
+          "suite_name": "nyc_taxi_data_onboarding_suite_final",
+          "expectation_count": 132,
+          "success_rate": 0.9621212121212122
+        }
+      ],
+      "columns": {
+        "index": {
+          "name": "index",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between",
+            "expect_column_quantile_values_to_be_between",
+            "expect_column_median_to_be_between",
+            "expect_column_mean_to_be_between",
+            "expect_column_stdev_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 8,
+            "successful_expectations": "8",
+            "success_rate": 1.0,
+            "exceptions": "0"
+          }
+        },
+        "passenger_count": {
+          "name": "passenger_count",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between",
+            "expect_column_quantile_values_to_be_between",
+            "expect_column_median_to_be_between",
+            "expect_column_mean_to_be_between",
+            "expect_column_stdev_to_be_between",
+            "expect_column_values_to_be_in_set",
+            "expect_column_unique_value_count_to_be_between",
+            "expect_column_proportion_of_unique_values_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 11,
+            "successful_expectations": "11",
+            "success_rate": 1.0,
+            "exceptions": "0"
+          }
+        },
+        "trip_distance": {
+          "name": "trip_distance",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between",
+            "expect_column_quantile_values_to_be_between",
+            "expect_column_median_to_be_between",
+            "expect_column_mean_to_be_between",
+            "expect_column_stdev_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 8,
+            "successful_expectations": "7",
+            "success_rate": 0.875,
+            "exceptions": "0"
+          }
+        },
+        "store_and_fwd_flag": {
+          "name": "store_and_fwd_flag",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_value_lengths_to_be_between",
+            "expect_column_values_to_match_regex",
+            "expect_column_values_to_be_in_set",
+            "expect_column_unique_value_count_to_be_between",
+            "expect_column_proportion_of_unique_values_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 6,
+            "successful_expectations": "6",
+            "success_rate": 1.0,
+            "exceptions": "0"
+          }
+        },
+        "payment_type": {
+          "name": "payment_type",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between",
+            "expect_column_quantile_values_to_be_between",
+            "expect_column_median_to_be_between",
+            "expect_column_mean_to_be_between",
+            "expect_column_stdev_to_be_between",
+            "expect_column_values_to_be_in_set",
+            "expect_column_unique_value_count_to_be_between",
+            "expect_column_proportion_of_unique_values_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 11,
+            "successful_expectations": "11",
+            "success_rate": 1.0,
+            "exceptions": "0"
+          }
+        },
+        "fare_amount": {
+          "name": "fare_amount",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between",
+            "expect_column_quantile_values_to_be_between",
+            "expect_column_median_to_be_between",
+            "expect_column_mean_to_be_between",
+            "expect_column_stdev_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 8,
+            "successful_expectations": "7",
+            "success_rate": 0.875,
+            "exceptions": "0"
+          }
+        },
+        "extra": {
+          "name": "extra",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between",
+            "expect_column_quantile_values_to_be_between",
+            "expect_column_median_to_be_between",
+            "expect_column_mean_to_be_between",
+            "expect_column_stdev_to_be_between",
+            "expect_column_values_to_be_in_set",
+            "expect_column_unique_value_count_to_be_between",
+            "expect_column_proportion_of_unique_values_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 11,
+            "successful_expectations": "11",
+            "success_rate": 1.0,
+            "exceptions": "0"
+          }
+        },
+        "mta_tax": {
+          "name": "mta_tax",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between",
+            "expect_column_quantile_values_to_be_between",
+            "expect_column_median_to_be_between",
+            "expect_column_mean_to_be_between",
+            "expect_column_stdev_to_be_between",
+            "expect_column_values_to_be_in_set",
+            "expect_column_unique_value_count_to_be_between",
+            "expect_column_proportion_of_unique_values_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 11,
+            "successful_expectations": "11",
+            "success_rate": 1.0,
+            "exceptions": "0"
+          }
+        },
+        "tip_amount": {
+          "name": "tip_amount",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between",
+            "expect_column_quantile_values_to_be_between",
+            "expect_column_median_to_be_between",
+            "expect_column_mean_to_be_between",
+            "expect_column_stdev_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 8,
+            "successful_expectations": "7",
+            "success_rate": 0.875,
+            "exceptions": "0"
+          }
+        },
+        "tolls_amount": {
+          "name": "tolls_amount",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between",
+            "expect_column_quantile_values_to_be_between",
+            "expect_column_median_to_be_between",
+            "expect_column_mean_to_be_between",
+            "expect_column_stdev_to_be_between",
+            "expect_column_values_to_be_in_set",
+            "expect_column_unique_value_count_to_be_between",
+            "expect_column_proportion_of_unique_values_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 11,
+            "successful_expectations": "10",
+            "success_rate": 0.9090909090909091,
+            "exceptions": "0"
+          }
+        },
+        "improvement_surcharge": {
+          "name": "improvement_surcharge",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between",
+            "expect_column_quantile_values_to_be_between",
+            "expect_column_median_to_be_between",
+            "expect_column_mean_to_be_between",
+            "expect_column_stdev_to_be_between",
+            "expect_column_values_to_be_in_set",
+            "expect_column_unique_value_count_to_be_between",
+            "expect_column_proportion_of_unique_values_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 11,
+            "successful_expectations": "11",
+            "success_rate": 1.0,
+            "exceptions": "0"
+          }
+        },
+        "total_amount": {
+          "name": "total_amount",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between",
+            "expect_column_quantile_values_to_be_between",
+            "expect_column_median_to_be_between",
+            "expect_column_mean_to_be_between",
+            "expect_column_stdev_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 8,
+            "successful_expectations": "7",
+            "success_rate": 0.875,
+            "exceptions": "0"
+          }
+        },
+        "pickup": {
+          "name": "pickup",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 4,
+            "successful_expectations": "4",
+            "success_rate": 1.0,
+            "exceptions": "0"
+          }
+        },
+        "dropoff": {
+          "name": "dropoff",
+          "expectation_types": [
+            "expect_column_values_to_not_be_null",
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 4,
+            "successful_expectations": "4",
+            "success_rate": 1.0,
+            "exceptions": "0"
+          }
+        },
+        "congestion_surcharge": {
+          "name": "congestion_surcharge",
+          "expectation_types": [
+            "expect_column_min_to_be_between",
+            "expect_column_max_to_be_between",
+            "expect_column_values_to_be_between",
+            "expect_column_quantile_values_to_be_between",
+            "expect_column_median_to_be_between",
+            "expect_column_mean_to_be_between",
+            "expect_column_stdev_to_be_between",
+            "expect_column_values_to_be_in_set",
+            "expect_column_unique_value_count_to_be_between",
+            "expect_column_proportion_of_unique_values_to_be_between"
+          ],
+          "quality_metrics": {
+            "total_expectations": 10,
+            "successful_expectations": "10",
+            "success_rate": 1.0,
+            "exceptions": "0"
+          }
+        }
+      },
+      "expectation_suites": [
+        "nyc_taxi_data_onboarding_suite_final"
+      ]
+    }
+  },
+  "expectation_suites": {
+    "nyc_taxi_data_onboarding_suite_final": {
+      "name": "nyc_taxi_data_onboarding_suite_final",
+      "data_assets": [
+        "nyc_taxi_data"
+      ],
+      "expectation_types": [
+        "expect_table_row_count_to_be_between",
+        "expect_table_columns_to_match_set",
+        "expect_column_values_to_not_be_null",
+        "expect_column_min_to_be_between",
+        "expect_column_max_to_be_between",
+        "expect_column_values_to_be_between",
+        "expect_column_quantile_values_to_be_between",
+        "expect_column_median_to_be_between",
+        "expect_column_mean_to_be_between",
+        "expect_column_stdev_to_be_between",
+        "expect_column_values_to_be_in_set",
+        "expect_column_unique_value_count_to_be_between",
+        "expect_column_proportion_of_unique_values_to_be_between",
+        "expect_column_value_lengths_to_be_between",
+        "expect_column_values_to_match_regex"
+      ],
+      "quality_metrics": {
+        "total_expectations": 132,
+        "successful_expectations": "127",
+        "success_rate": 0.9621212121212122,
+        "exceptions": "0"
+      }
+    }
+  },
+  "data_quality_summary": {
+    "overall_success_rate": 0.9621212121212122,
+    "exception_rate": 0.0,
+    "total_expectations": 132
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "validation_path": "/data/validations",
+  "env_path": "/Users/yavin/python_projects/ollama_jupyter/.env",
+  "output_dir": "/reports",
+  "ollama_timeout": 180,
+  "pdf_generation": true,
+  "ai_analysis": true,
+  "data_catalog": true,
+  "log_level": "DEBUG",
+  "custom_settings": {
+    "enable_notifications": true,
+    "notification_email": "admin@company.com",
+    "retry_attempts": 3,
+    "batch_size": 1000
+  }
+}

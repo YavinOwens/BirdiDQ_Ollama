@@ -1,0 +1,17 @@
+{
+  "validation_path": "../BirdiDQ/gx/uncommitted/validations",
+  "env_path": "/Users/yavin/python_projects/ollama_jupyter/.env",
+  "output_dir": ".",
+  "ollama_timeout": 120,
+  "pdf_generation": true,
+  "ai_analysis": true,
+  "data_catalog": true,
+  "log_level": "INFO",
+  "ollama_config": {
+    "cloud_url": "https://ollama.com",
+    "cloud_model": "gpt-oss:20b",
+    "api_key": "d0b2515a1eb546269f1751c9c822a498.D6sJ0XZ4KIZ6XGdM85pvuMnO",
+    "local_url": "http://localhost:11434",
+    "local_model": "phi3:mini"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "generation_time": "2025-10-03T17:23:26.475574",
+  "generation_time": "2025-10-06T16:06:42.075298",
   "data_sources": {
     "spark": {
       "source": "spark_professional",
@@ -8,7 +8,7 @@
   },
   "expectation_suites": {
     "spark_missingness": 19,
-    "spark_onboarding": 55,
+    "spark_onboarding": 49,
     "manual_business_rules": 3
   },
   "checkpoint_results": {
@@ -18,7 +18,7 @@
   },
   "spark_info": {
     "spark_version": "4.0.0",
-    "dataframe_rows": 1000,
+    "dataframe_rows": 20000,
     "dataframe_columns": 19
   }
 }

@@ -1,0 +1,10 @@
+{
+  "validation_path": "../BirdiDQ/gx/uncommitted/validations",
+  "env_path": "/Users/yavin/python_projects/ollama_jupyter/.env",
+  "output_dir": "basic_output",
+  "ollama_timeout": 120,
+  "pdf_generation": true,
+  "ai_analysis": true,
+  "data_catalog": true,
+  "log_level": "INFO"
+}

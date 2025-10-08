@@ -1,0 +1,22 @@
+{
+  "validation_path": "../BirdiDQ/gx/uncommitted/validations",
+  "env_path": "/Users/yavin/python_projects/ollama_jupyter/.env",
+  "output_dir": "custom_output",
+  "ollama_timeout": 60,
+  "pdf_generation": false,
+  "ai_analysis": true,
+  "data_catalog": true,
+  "log_level": "WARNING",
+  "custom_report_settings": {
+    "include_charts": true,
+    "chart_format": "png",
+    "max_chart_size": "1920x1080",
+    "custom_styling": true
+  },
+  "output_formats": {
+    "markdown": true,
+    "pdf": false,
+    "html": true,
+    "json": true
+  }
+}

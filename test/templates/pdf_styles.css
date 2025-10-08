@@ -1,0 +1,217 @@
+/* PDF Styling for Data Reporting Pipeline */
+
+@page {
+    size: A4;
+    margin: 2cm;
+    @top-center {
+        content: "Great Expectations Validation Analysis Report";
+        font-size: 10px;
+        color: #666;
+    }
+    @bottom-center {
+        content: "Page " counter(page) " of " counter(pages);
+        font-size: 10px;
+        color: #666;
+    }
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    font-size: 11px;
+}
+
+h1 {
+    color: #2c3e50;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+    page-break-after: avoid;
+    font-size: 18px;
+}
+
+h2 {
+    color: #34495e;
+    margin-top: 25px;
+    border-bottom: 1px solid #bdc3c7;
+    padding-bottom: 5px;
+    page-break-after: avoid;
+    font-size: 14px;
+}
+
+h3 {
+    color: #7f8c8d;
+    margin-top: 20px;
+    page-break-after: avoid;
+    font-size: 12px;
+}
+
+h4 {
+    color: #95a5a6;
+    margin-top: 15px;
+    page-break-after: avoid;
+    font-size: 11px;
+}
+
+/* Table styling for main content - compact */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 15px 0;
+    font-size: 9px;
+    page-break-inside: avoid;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 4px 6px;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    font-size: 9px;
+}
+
+/* Wide tables go to appendix */
+.appendix-table {
+    font-size: 8px;
+    margin: 10px 0;
+}
+
+.appendix-table th,
+.appendix-table td {
+    padding: 2px 4px;
+    font-size: 8px;
+}
+
+/* Code styling */
+code {
+    background-color: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 9px;
+}
+
+pre {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-size: 9px;
+    page-break-inside: avoid;
+}
+
+/* Page breaks */
+.page-break {
+    page-break-before: always;
+}
+
+/* Summary boxes */
+.summary-box {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+/* Appendix styling */
+.appendix {
+    page-break-before: always;
+}
+
+.appendix h2 {
+    color: #e74c3c;
+    border-bottom: 2px solid #e74c3c;
+}
+
+/* Executive summary styling */
+.executive-summary {
+    background-color: #ffffff;
+    border-left: 4px solid #3498db;
+    padding: 20px;
+    margin: 20px 0;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* Critical findings styling */
+.critical-findings {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+/* Recommendations styling */
+.recommendations {
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+/* Data quality metrics styling */
+.metrics-highlight {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Success rate styling */
+.success-rate-high {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.success-rate-medium {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.success-rate-low {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* List styling */
+ul, ol {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+li {
+    margin: 5px 0;
+}
+
+/* Link styling */
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Footer styling */
+.footer {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+    font-size: 9px;
+    color: #6c757d;
+    text-align: center;
+}
